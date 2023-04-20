@@ -8,11 +8,18 @@
 #include "helper_find_combo.cpp"
 #include "helper_timer.cpp"
 
-int main() {
+int main(int argc, char const *argv[]) {
     ll start;
     ll max_lim;
-    std::cout << "Start and Stop Values [Start, Stop): " << std::flush;
-    std::cin >> start >> max_lim;
+    if (argc == 3) {
+        start = std::stoll(argv[1]);
+        max_lim = std::stoll(argv[2]);
+    } else {
+        std::cout << "Start and Stop Values [Start, Stop): " << std::flush;
+        std::cin >> start >> max_lim;
+    }
+    std::cout << "Start: " << start << std::endl;
+    std::cout << "Stop: " << max_lim << std::endl;
     auto startTime = std::chrono::steady_clock::now();
     ll start_2 = start * start;
     ll max_val = max_lim * max_lim;

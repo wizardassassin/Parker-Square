@@ -9,9 +9,6 @@
 #include "helper_find_combo.cpp"
 #include "helper_timer.cpp"
 
-using namespace findCombo;
-using namespace timer;
-
 int main() {
     // ll start = 0;
     // ll max_lim = 10000;
@@ -24,10 +21,10 @@ int main() {
     ll max_val = max_lim * max_lim;
     ll vect_len = max_val - start_2;
     std::vector<vv> vect(vect_len);
-    labelBar("Pre Compute");
+    timer::labelBar("Pre Compute");
     ll start_min = std::ceil(std::sqrt(start_2 / 2));
     for (ll i = start_min; i < start; i++) {
-        progressBar(i - start_min, start - start_min);
+        timer::progressBar(i - start_min, start - start_min);
         ll j_min = std::ceil(std::sqrt(start_2 - i * i));
         ll j_lim = std::ceil(std::sqrt(max_val - i * i));
         ll j_max = std::min(i, j_lim);
@@ -37,10 +34,10 @@ int main() {
             vect[v - start_2].push_back(i);
         }
     }
-    completeBar();
-    labelBar("Compute");
+    timer::completeBar();
+    timer::labelBar("Compute");
     for (ll i = start; i < max_lim; i++) {
-        progressBar(i - start, max_lim - start);
+        timer::progressBar(i - start, max_lim - start);
         ll j_lim = std::ceil(std::sqrt(max_val - i * i));
         ll j_max = std::min(i, j_lim);
         for (ll j = 0; j < j_max; j++) {
@@ -49,11 +46,11 @@ int main() {
             vect[v - start_2].push_back(i);
         }
     }
-    completeBar();
-    labelBar("Post Compute");
+    timer::completeBar();
+    timer::labelBar("Post Compute");
     ll count = 0;
     for (ll i = 0; i < vect_len; i++) {
-        progressBar(i, vect_len);
+        timer::progressBar(i, vect_len);
         ll len = vect[i].size();
         if (len > 6) {
             std::vector<pll> vect2(len / 2);
@@ -62,17 +59,17 @@ int main() {
                 ll p2 = vect[i][j + 1] * vect[i][j + 1];
                 vect2[j / 2] = std::pair(p1, p2);
             }
-            bool printed = findCombinations(vect2);
+            bool printed = findCombo::findCombinations(vect2);
             if (printed) {
-                printBar();
+                timer::printBar();
                 count++;
             }
         }
     }
     std::cout << count << " pairs"
               << "\n";
-    completeBar();
+    timer::completeBar();
     auto stopTime = std::chrono::steady_clock::now();
     std::cout << "Elapsed:\n";
-    printTime(startTime, stopTime);
+    timer::printTime(startTime, stopTime);
 }

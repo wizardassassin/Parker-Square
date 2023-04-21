@@ -24,5 +24,5 @@ g++ -Ofast -march=native -flto main.cpp -o main.out
 Run the code
 
 ```bash
-./main.out --computeProgram=1 --minValue=0 --maxValue=100000 --vectorSize=10000 --threadCount=8
+./main.out --minValue=0 --maxValue=100000 --vectorSize=10000 --threadCount=8
 ```

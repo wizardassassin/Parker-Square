@@ -8,20 +8,20 @@ namespace timer {
 ll lastPrint;
 tp startBar;
 tp stopBar;
-void printTime(tp startTime, tp stopTime) {
+void printTime(std::ostream &stream, const tp &startTime, const tp &stopTime) {
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
         stopTime - startTime);
     ll time = duration.count();
     if (time < 1000) {
-        std::cout << time / 1000.0 << " ms" << std::endl;
+        stream << time / 1000.0 << " ms" << std::endl;
         return;
     }
     if (time < 10 * 1000) {
-        std::cout << time / 10 / 100.0 << " ms" << std::endl;
+        stream << time / 10 / 100.0 << " ms" << std::endl;
         return;
     }
     if (time < 100 * 1000) {
-        std::cout << time / 100 / 10.0 << " ms" << std::endl;
+        stream << time / 100 / 10.0 << " ms" << std::endl;
         return;
     }
     time /= 1000;
@@ -30,55 +30,72 @@ void printTime(tp startTime, tp stopTime) {
     ll hour = 60 * min;
     ll day = 24 * hour;
     if (time < sec) {
-        std::cout << time << " ms" << std::endl;
+        stream << time << " ms" << std::endl;
         return;
     }
     if (time < 10 * sec) {
-        std::cout << time / 10 / 100.0 << " sec" << std::endl;
+        stream << time / 10 / 100.0 << " sec" << std::endl;
         return;
     }
     if (time < min) {
-        std::cout << time / 100 / 10.0 << " sec" << std::endl;
+        stream << time / 100 / 10.0 << " sec" << std::endl;
         return;
     }
     if (time < 10 * min) {
-        std::cout << time / 600 / 100.0 << " min" << std::endl;
+        stream << time / 600 / 100.0 << " min" << std::endl;
         return;
     }
     if (time < hour) {
-        std::cout << time / 6000 / 10.0 << " min" << std::endl;
+        stream << time / 6000 / 10.0 << " min" << std::endl;
         return;
     }
     if (time < 10 * hour) {
-        std::cout << time / 36000 / 100.0 << " hour" << std::endl;
+        stream << time / 36000 / 100.0 << " hour" << std::endl;
         return;
     }
     if (time < day || true) {
-        std::cout << time / 360000 / 10.0 << " hour" << std::endl;
+        stream << time / 360000 / 10.0 << " hour" << std::endl;
         return;
     }
 }
-void printBar() {
-    std::cout << std::right << std::setw(3) << lastPrint << "%"
-              << "\r" << std::flush;
+void printTime(const tp &startTime, const tp &stopTime) {
+    printTime(std::cout, startTime, stopTime);
 }
 
-void progressBar(ll i, ll max_val) {
+void printBar(std::ostream &stream, ll lastPrint) {
+    stream << std::right << std::setw(3) << lastPrint << "%"
+           << "\r" << std::flush;
+}
+void printBar() {
+    printBar(std::cout, lastPrint);
+}
+
+void progressBar(std::ostream &stream, ll &lastPrint, ll i, ll max_val) {
     if ((i * 100 / max_val) > lastPrint) {
         lastPrint = i * 100 / max_val;
         printBar();
     }
 }
-
-void completeBar() {
-    stopBar = std::chrono::steady_clock::now();
-    std::cout << "100%\n";
-    printTime(startBar, stopBar);
+void progressBar(ll i, ll max_val) {
+    progressBar(std::cout, lastPrint, i, max_val);
 }
 
-void labelBar(std::string label) {
+void completeBar(std::ostream &stream, const tp &startBar, tp &stopBar) {
+    stopBar = std::chrono::steady_clock::now();
+    stream << "100%\n";
+    printTime(stream, startBar, stopBar);
+}
+void completeBar() {
+    completeBar(std::cout, startBar, stopBar);
+}
+
+void labelBar(std::ostream &stream, tp &startBar, ll &lastPrint,
+              const std::string &label) {
     lastPrint = -1;
     startBar = std::chrono::steady_clock::now();
-    std::cout << label << ":" << std::endl;
+    stream << label << ":" << std::endl;
+}
+void labelBar(const std::string &label) {
+    labelBar(std::cout, startBar, lastPrint, label);
 }
 }  // namespace timer

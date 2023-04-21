@@ -53,7 +53,7 @@ bool findCombinations2(std::vector<pll> arr) {
                 }
                 auto x1 = val3.first;
                 auto y1 = val3.second;
-                auto com1 = checkEdges(a, b, c, d, x1, y1);
+                auto com1 = checkEdges2(a, b, c, d, x1, y1);
                 if (com1 == "00") {
                     continue;
                 }
@@ -88,7 +88,7 @@ std::string checkEdges(int a, int b, int c, int d, int x, int y) {
     return v + h;
 }
 
-bool findCombinations(std::vector<pll> arr) {
+bool findCombinations(std::ostream& stream, std::vector<pll> arr) {
     size_t arr_len = arr.size();
     for (size_t i = 0; i < arr_len; i++) {
         for (size_t j = i + 1; j < arr_len; j++) {
@@ -110,22 +110,23 @@ bool findCombinations(std::vector<pll> arr) {
                 arr3.push_back(std::pair(val3, std::pair(com1, i2)));
             }
             if (arr3.size() > 0) {
-                std::cout << i << "(" << std::sqrt(val1.first) << ", "
-                          << std::sqrt(val1.second) << ") " << j << "("
-                          << std::sqrt(val2.first) << ", "
-                          << std::sqrt(val2.second) << ") | ";
+                stream << i << "(" << std::sqrt(val1.first) << ", "
+                       << std::sqrt(val1.second) << ") " << j << "("
+                       << std::sqrt(val2.first) << ", "
+                       << std::sqrt(val2.second) << ") | ";
                 for (auto& v : arr3) {
-                    std::cout << v.second.second << "("
-                              << std::sqrt(v.first.first) << ", "
-                              << std::sqrt(v.first.second) << ", '"
-                              << v.second.first << "') ";
+                    stream << v.second.second << "(" << std::sqrt(v.first.first)
+                           << ", " << std::sqrt(v.first.second) << ", '"
+                           << v.second.first << "') ";
                 }
-                std::cout << std::endl;
+                stream << std::endl;
                 return true;
             }
         }
     }
     return false;
 }
-
+bool findCombinations(std::vector<pll> arr) {
+    return findCombinations(std::cout, arr);
+}
 }  // namespace findCombo

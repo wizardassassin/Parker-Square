@@ -16,11 +16,9 @@ Compile the source code
 
 ```bash
 # intel compiler
-icpx -fast compute_1.cpp -o compute_1.out
-icpx main.cpp -o main.out
+icpx -fast main.cpp -o main.out
 # or gnu compiler
-g++ -Ofast -march=native -flto compute_1.cpp -o compute_1.out
-g++ main.cpp -o main.out
+g++ -Ofast -march=native -flto main.cpp -o main.out
 ```
 
 Run the code

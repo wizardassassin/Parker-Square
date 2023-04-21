@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include "helper_defs.cpp"
+#include "helper_defs.hpp"
 
 namespace debug {
 void print_vector(vv vect) {

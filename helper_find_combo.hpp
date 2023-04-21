@@ -3,7 +3,7 @@
 #include <utility>
 #include <vector>
 
-#include "helper_defs.cpp"
+#include "helper_defs.hpp"
 
 namespace findCombo {
 std::string checkEdges2(ll a, ll b, ll c, ll d, ll x, ll y) {

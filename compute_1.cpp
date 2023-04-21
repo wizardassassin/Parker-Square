@@ -5,9 +5,9 @@
 #include <utility>
 #include <vector>
 
-#include "helper_defs.cpp"
-#include "helper_find_combo.cpp"
-#include "helper_timer.cpp"
+#include "helper_defs.hpp"
+#include "helper_find_combo.hpp"
+#include "helper_timer.hpp"
 
 int main(int argc, char const *argv[]) {
     // ll start = 0;

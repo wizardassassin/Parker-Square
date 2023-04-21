@@ -5,9 +5,9 @@
 #include <utility>
 #include <vector>
 
-#include "helper_defs.cpp"
-#include "helper_find_combo.cpp"
-#include "helper_timer.cpp"
+#include "helper_defs.hpp"
+#include "helper_find_combo.hpp"
+#include "helper_timer.hpp"
 
 namespace compute_1 {
 void pre_compute_1(std::ostream &stream, std::vector<vv> &vect, ll start_2,

@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 
-#include "helper_defs.cpp"
+#include "helper_defs.hpp"
 
 namespace timer {
 ll lastPrint;

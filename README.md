@@ -29,8 +29,6 @@ Run the code
 
 ## Notes
 
-There are
-
 If $a=371, b=559, c=149, d=541, e=49, f=421$  
 then $a^2+f^2=c^2+d^2=b^2+e^2$  
 and $a^2+b^2+c^2=d^2+e^2+f^2$  

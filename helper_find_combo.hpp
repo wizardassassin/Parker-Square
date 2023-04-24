@@ -113,11 +113,11 @@ bool findCombinations(std::ostream& stream, std::vector<pll> arr) {
             if (arr3.size() > 0) {
                 stream << i << "(" << val1.first << ", " << val1.second << ") "
                        << j << "(" << val2.first << ", " << val2.second
-                       << ") | ";
+                       << ") |";
                 for (auto& v : arr3) {
-                    stream << v.second.second << "(" << v.first.first << ", "
-                           << v.first.second << ", '" << v.second.first
-                           << "') ";
+                    stream << " " << v.second.second << "(" << v.first.first
+                           << ", " << v.first.second << ", '" << v.second.first
+                           << "')";
                 }
                 stream << std::endl;
                 return true;

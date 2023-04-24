@@ -66,7 +66,7 @@ int main(int argc, char const *argv[]) {
                 ll p2 = vect[i][j + 1] * vect[i][j + 1];
                 vect2[j / 2] = std::pair(p1, p2);
             }
-            bool printed = findCombo::findCombinations(vect2);
+            bool printed = findCombo::findCombinations2(vect2);
             if (printed) {
                 timer::printBar();
                 count++;

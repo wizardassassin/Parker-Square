@@ -59,8 +59,8 @@ void post_compute_1(std::ostream &stream, std::vector<vv> &vect, ll vect_len) {
         if (len > 6) {
             std::vector<pll> vect2(len / 2);
             for (ll j = 0; j < len - 1; j += 2) {
-                ll p1 = vect[i][j] * vect[i][j];
-                ll p2 = vect[i][j + 1] * vect[i][j + 1];
+                ll p1 = vect[i][j];
+                ll p2 = vect[i][j + 1];
                 vect2[j / 2] = std::pair(p1, p2);
             }
             bool printed = findCombo::findCombinations(stream, vect2);

@@ -78,10 +78,10 @@ bool findCombinations2(std::vector<pll> arr) {
     return printed;
 }
 
-std::string checkEdges(int a, int b, int c, int d, int x, int y) {
-    int v_1 = a + b - c - d;
+std::string checkEdges(ll a, ll b, ll c, ll d, ll x, ll y) {
+    ll v_1 = a + b - c - d;
     bool vert_1 = v_1 == x - y;
-    int h_1 = a + c - b - d;
+    ll h_1 = a + c - b - d;
     bool hori_1 = h_1 == x - y;
     std::string v = ((vert_1) ? "1" : "0");
     std::string h = ((hori_1) ? "1" : "0");

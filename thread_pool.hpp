@@ -1,6 +1,7 @@
 // Custom thread pool from reading
 // https://stackoverflow.com/questions/15752659/thread-pooling-in-c11
 #include <chrono>
+#include <cmath>
 #include <condition_variable>
 #include <functional>
 #include <iostream>
@@ -93,12 +94,35 @@ class ThreadPool {
         auto initStart = start;
         this->mainWait.wait(lock, [this, &stream, &start, &initStart] {
             auto stop = std::chrono::steady_clock::now();
-            stream << "\nqueuedJobs: " << this->jobs.size()
-                   << " \nactiveThreads: " << this->activeThreads;
-            stream << "\nElapsedTime: ";
-            timer::printTime(stream, initStart, stop);
-            stream << "lastCompetion: ";
+            // Maybe take into account activeThreads?
+            long long activeThreads = this->activeThreads;
+            long long jobCount = this->jobCount;
+            long long remainingJobs = std::min(
+                jobCount, (long long)this->jobs.size() + activeThreads);
+            long long completedJobs =
+                std::max(0LL, this->jobCount - remainingJobs - activeThreads);
+            stream << "\nqueuedJobs: " << remainingJobs;
+            stream << " \nactiveThreads: " << activeThreads;
+            stream << "\ncompletedJobs: " << completedJobs;
+            stream << "\njobCount: " << jobCount;
+            stream << "\nlastCompetion: ";
             timer::printTime(stream, start, stop);
+            stream << "ElapsedTime: ";
+            timer::printTime(stream, initStart, stop);
+            stream << "estTimeLeft: ";
+            if (completedJobs != 0) {
+                auto duration =
+                    std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        stop - initStart);
+                long double timePerJob =
+                    duration.count() / (long double)(completedJobs);
+                auto nanoTime = remainingJobs * timePerJob;
+                timer::printTime(
+                    stream, stop,
+                    stop + std::chrono::nanoseconds((long long)nanoTime));
+            } else {
+                stream << "unknown" << std::endl;
+            }
             start = stop;
             return this->jobs.empty() && this->activeThreads == 0;
         });

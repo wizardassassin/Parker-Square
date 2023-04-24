@@ -16,9 +16,9 @@ Compile the source code
 
 ```bash
 # intel compiler
-icpx -fast main.cpp -o main.out
+icpx -pthread -fast main.cpp -o main.out
 # or gnu compiler
-g++ -Ofast -march=native -flto main.cpp -o main.out
+g++ -pthread -Ofast -march=native -flto main.cpp -o main.out
 ```
 
 Run the code
@@ -26,3 +26,12 @@ Run the code
 ```bash
 ./main.out --minValue=0 --maxValue=100000 --vectorSize=10000 --threadCount=8
 ```
+
+## Notes
+
+There are
+
+If $a=371, b=559, c=149, d=541, e=49, f=421$  
+then $a^2+f^2=c^2+d^2=b^2+e^2$  
+and $a^2+b^2+c^2=d^2+e^2+f^2$  
+and $a^4+b^4+c^4=d^4+e^4+f^4$

@@ -53,10 +53,15 @@ void printTime(std::ostream &stream, const tp &startTime, const tp &stopTime) {
         stream << time / 36000 / 100.0 << " hour" << std::endl;
         return;
     }
-    if (time < day || true) {
+    if (time < day) {
         stream << time / 360000 / 10.0 << " hour" << std::endl;
         return;
     }
+    std::streamsize size = stream.precision();
+    stream << std::fixed << std::setprecision(1) << time / 360000 / 10.0
+           << " hour" << std::endl;
+    stream << std::defaultfloat << std::setprecision(size);
+    return;
 }
 void printTime(const tp &startTime, const tp &stopTime) {
     printTime(std::cout, startTime, stopTime);

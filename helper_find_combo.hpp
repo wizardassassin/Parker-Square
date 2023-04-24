@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include <string>
 #include <utility>
@@ -94,15 +95,15 @@ bool findCombinations(std::ostream& stream, std::vector<pll> arr) {
         for (size_t j = i + 1; j < arr_len; j++) {
             auto val1 = arr[i];
             auto val2 = arr[j];
-            auto a = val1.first;
-            auto d = val1.second;
-            auto b = val2.first;
-            auto c = val2.second;
+            auto a = val1.first * val1.first;
+            auto d = val1.second * val1.second;
+            auto b = val2.first * val2.first;
+            auto c = val2.second * val2.second;
             std::vector<std::pair<pll, psl>> arr3;
             for (size_t i2 = j + 1; i2 < arr_len; i2++) {
                 auto val3 = arr[i2];
-                auto x1 = val3.first;
-                auto y1 = val3.second;
+                auto x1 = val3.first * val3.first;
+                auto y1 = val3.second * val3.second;
                 auto com1 = checkEdges(a, b, c, d, x1, y1);
                 if (com1 == "00") {
                     continue;
@@ -110,14 +111,13 @@ bool findCombinations(std::ostream& stream, std::vector<pll> arr) {
                 arr3.push_back(std::pair(val3, std::pair(com1, i2)));
             }
             if (arr3.size() > 0) {
-                stream << i << "(" << std::sqrt(val1.first) << ", "
-                       << std::sqrt(val1.second) << ") " << j << "("
-                       << std::sqrt(val2.first) << ", "
-                       << std::sqrt(val2.second) << ") | ";
+                stream << i << "(" << val1.first << ", " << val1.second << ") "
+                       << j << "(" << val2.first << ", " << val2.second
+                       << ") | ";
                 for (auto& v : arr3) {
-                    stream << v.second.second << "(" << std::sqrt(v.first.first)
-                           << ", " << std::sqrt(v.first.second) << ", '"
-                           << v.second.first << "') ";
+                    stream << v.second.second << "(" << v.first.first << ", "
+                           << v.first.second << ", '" << v.second.first
+                           << "') ";
                 }
                 stream << std::endl;
                 return true;

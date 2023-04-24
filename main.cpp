@@ -13,6 +13,7 @@
 #include "threaded_compute_1.hpp"
 
 int main(int argc, char const *argv[]) {
+    auto start = std::chrono::steady_clock::now();
     long long minValue = 0;
     long long maxValue = 10000;
     long long vectorSize = 4000;
@@ -40,12 +41,16 @@ int main(int argc, char const *argv[]) {
     std::vector<std::pair<long long, long long>> ranges;
     long long i = minValue;
     while (i < maxValue) {
-        long long nextValue = std::min(
-            (long long)std::sqrt(i * i + vectorSize * vectorSize), maxValue);
+        long long nextValue =
+            std::min((long long)std::sqrt(i * i + vectorSize * vectorSize /
+                                                      (long double)threadCount),
+                     maxValue);
         ranges.push_back(std::pair(i, nextValue));
         i = nextValue;
     }
     long long jobCount = ranges.size();
+    std::cout << "jobCount: " << jobCount << std::endl;
+
     for (long long i = 0; i < jobCount; i++) {
         pool.addJob([&ranges, i] {
             std::ofstream file;
@@ -56,11 +61,10 @@ int main(int argc, char const *argv[]) {
         });
     }
     pool.start();
-    pool.wait();
+    pool.wait(std::cout);
     pool.stop();
-    // for (std::stringstream &ss : vect) {
-    //     std::cout << ss.str();
-    // }
-
+    auto stop = std::chrono::steady_clock::now();
+    std::cout << "\nElapsed:\n";
+    timer::printTime(std::cout, start, stop);
     return 0;
 }

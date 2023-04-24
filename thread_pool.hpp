@@ -1,11 +1,19 @@
 // Custom thread pool from reading
 // https://stackoverflow.com/questions/15752659/thread-pooling-in-c11
+#include <chrono>
 #include <condition_variable>
 #include <functional>
+#include <iostream>
 #include <mutex>
 #include <queue>
 #include <thread>
 #include <vector>
+
+namespace timer {
+void printTime(std::ostream& stream,
+               const std::chrono::steady_clock::time_point& startTime,
+               const std::chrono::steady_clock::time_point& stopTime);
+}  // namespace timer
 
 namespace ThreadPool {
 // I hope there's no race conditions or unexpected behavior
@@ -14,6 +22,7 @@ class ThreadPool {
     bool stopThreads;
     bool isActive;
     long long threadCount;
+    long long jobCount;
     long long activeThreads;
     std::condition_variable mainWait;
     std::mutex threadLock;
@@ -44,12 +53,13 @@ class ThreadPool {
     ThreadPool(long long threadCount) {
         this->threadCount = threadCount;
         this->activeThreads = 0;
+        this->jobCount = 0;
         this->stopThreads = false;
         this->isActive = false;
         this->threads.resize(threadCount);
     }
     ThreadPool() {
-        ThreadPool(std::thread::hardware_concurrency());
+        ThreadPool((long long)std::thread::hardware_concurrency());
     }
     void start() {
         if (this->isActive) {
@@ -77,6 +87,19 @@ class ThreadPool {
         this->jobs = emptyQueue;
         this->isActive = false;
     }
+    void wait(std::ostream& stream) {
+        std::unique_lock<std::mutex> lock(this->threadLock);
+        auto start = std::chrono::steady_clock::now();
+        this->mainWait.wait(lock, [this, &stream, &start] {
+            auto stop = std::chrono::steady_clock::now();
+            stream << "\nqueuedJobs: " << this->jobs.size()
+                   << " \nactiveThreads: " << this->activeThreads
+                   << "\nlastCompetion: ";
+            timer::printTime(stream, start, stop);
+            start = stop;
+            return this->jobs.empty() && this->activeThreads == 0;
+        });
+    }
     void wait() {
         std::unique_lock<std::mutex> lock(this->threadLock);
         this->mainWait.wait(lock, [this] {
@@ -89,6 +112,7 @@ class ThreadPool {
     }
     void addJob(const std::function<void()>& job) {
         std::unique_lock<std::mutex> lock(this->threadLock);
+        this->jobCount++;
         this->jobs.push(job);
         this->threadWait.notify_one();
     }

@@ -1,0 +1,15 @@
+#square-grid {
+    border: black solid 2px;
+    border-spacing: 5px;
+}
+
+#input-wrapper {
+}
+
+#input-wrapper > * {
+    margin: 5px;
+}
+
+.square-input {
+    /* width: 100px; */
+}

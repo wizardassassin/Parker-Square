@@ -107,7 +107,7 @@ class ThreadPool {
             stream << "\njobCount: " << jobCount;
             stream << "\nlastCompetion: ";
             timer::printTime(stream, start, stop);
-            stream << "ElapsedTime: ";
+            stream << "elapsedTime: ";
             timer::printTime(stream, initStart, stop);
             stream << "estTimeLeft: ";
             if (completedJobs != 0) {

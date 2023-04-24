@@ -90,11 +90,14 @@ class ThreadPool {
     void wait(std::ostream& stream) {
         std::unique_lock<std::mutex> lock(this->threadLock);
         auto start = std::chrono::steady_clock::now();
-        this->mainWait.wait(lock, [this, &stream, &start] {
+        auto initStart = start;
+        this->mainWait.wait(lock, [this, &stream, &start, &initStart] {
             auto stop = std::chrono::steady_clock::now();
             stream << "\nqueuedJobs: " << this->jobs.size()
-                   << " \nactiveThreads: " << this->activeThreads
-                   << "\nlastCompetion: ";
+                   << " \nactiveThreads: " << this->activeThreads;
+            stream << "\nElapsedTime: ";
+            timer::printTime(stream, initStart, stop);
+            stream << "lastCompetion: ";
             timer::printTime(stream, start, stop);
             start = stop;
             return this->jobs.empty() && this->activeThreads == 0;

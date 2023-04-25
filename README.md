@@ -27,6 +27,25 @@ Run the code
 ./main.out --minValue=0 --maxValue=100000 --vectorSize=10000 --threadCount=8
 ```
 
+## Algorithm
+
+The algorithm is based on the observation that opposite sides of a magic square have to sum up to the same total.
+
+```
+1   1   2   3   2
+  +---+---+---+
+1 | a | b | c |
+  +---+---+---+
+2 | d | e | f |
+  +---+---+---+
+3 | g | h | i |
+  +---+---+---+
+```
+
+Row 2 = Col 2 = Diag 1 = Diag 2  
+$d+e+f=b+e+h=a+e+i=c+e+g$  
+$d+f=b+h=a+i=c+g$
+
 ## Notes
 
 If $a=371, b=559, c=149, d=541, e=49, f=421$  

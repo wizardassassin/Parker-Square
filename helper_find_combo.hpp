@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <utility>
@@ -62,6 +63,8 @@ bool findCombinations2(std::vector<pll> arr) {
             }
             if (arr3.size() > 0) {
                 printed = true;
+                std::streamsize size = std::cout.precision();
+                std::cout << std::fixed << std::setprecision(1);
                 std::cout << i << "(" << std::sqrt(val1.first) << ", "
                           << std::sqrt(val1.second) << ") " << j << "("
                           << std::sqrt(val2.first) << ", "
@@ -73,6 +76,7 @@ bool findCombinations2(std::vector<pll> arr) {
                               << v.second.first << "') ";
                 }
                 std::cout << std::endl;
+                std::cout << std::defaultfloat << std::setprecision(size);
             }
         }
     }

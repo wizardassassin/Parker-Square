@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -21,6 +22,14 @@ int64_t vectorSize = 4000;
 int64_t rangeCount = -1;
 
 std::vector<std::pair<int64_t, int64_t>> ranges;
+
+std::string getTime() {
+    auto time =
+        std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    std::string str_time = std::ctime(&time);
+    auto last_char = str_time.size() - 1;
+    return str_time.substr(0, last_char);
+}
 
 void init_tasks() {
     int64_t i = minValue;
@@ -67,18 +76,23 @@ int main(int argc, char** argv) {
     int task_size = my_tasks.size();
 
     stream << "Process " << rank << " of " << size << " on " << name << " with "
-           << task_size << " tasks" << std::endl;
+           << task_size << " tasks at " << getTime() << std::endl;
     std::cout << stream.str();
 
+    std::string outFileName =
+        "mpi_" + std::to_string(rank) + "_" + std::to_string(size) + ".txt";
     std::ofstream outFile;
-    outFile.open("mpi_" + std::to_string(rank) + "_" + std::to_string(size) +
-                 ".txt");
+    outFile.open(outFileName);
 
     for (int i = 0; i < task_size; i++) {
         auto range = my_tasks[i];
         compute_quiet::main_compute(outFile, range.first, range.second);
         outFile << std::flush;
     }
+
+    stream.str("");
+    stream << "Process " << rank << " completed at " << getTime() << std::endl;
+    std::cout << stream.str();
 
     outFile.close();
     MPI::Finalize();

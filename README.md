@@ -27,6 +27,29 @@ Run the code
 ./main.out --minValue=0 --maxValue=100000 --vectorSize=10000 --threadCount=8
 ```
 
+### Running MPI
+
+Enter the directory
+
+```bash
+cd mpi
+```
+
+Compile the code using mpi
+
+```bash
+# intel-mpi compiler
+mpicxx -cxx=icpx -fast main_mpi.cpp -o main_mpi.out
+# openmpi compiler with g++
+mpicxx -Ofast -march=native main_mpi.cpp -o main_mpi.out
+```
+
+Run the code
+
+```bash
+time mpirun -np 8 ./main_mpi.out 0 100000 10000
+```
+
 ## Algorithm
 
 The algorithm is based on the observation that opposite sides of a magic square have to sum up to the same total.

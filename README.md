@@ -73,7 +73,7 @@ $d+f=b+h=a+i=c+g$
 
 The search space I chose was from $0$ to $5000000^2$ i.e. the first $2.5*10^{13}$ or 25,000,000,000,000 numbers. The computation took 109.3 hours, or a little over 4.5 days on an intel compute node with 44 cores and 256 GB of ram. 149557 separate files/jobs were created in the compute process.
 
-Sadly, no suitable numbers were found that satisfy the magic square of squares. The aggregated results can be found in [aggregated_0_5mil.txt](./results/aggregated_0_5mil.txt).
+Sadly, no suitable numbers were found that satisfy the magic square of squares. The aggregated results can be found in [aggregated_00_05mil.txt](./results/aggregated_00_05mil.txt).
 
 An interesting side note is that for every set of diagonal numbers, the horizontal condition was never satisfied (only the vertical condition was satisfied). Also, only one pair satisfied the vertical condition per set.
 

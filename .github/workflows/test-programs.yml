@@ -28,4 +28,4 @@ jobs:
             - name: Compile Program
               run: make ${{ matrix.data.command }}
             - name: Run Program
-              run: bash ./run_program.sh ${{ matrix.data.command }}.out 0 50000 10000
+              run: bash ./run_program.sh ${{ matrix.data.command }} 0 50000 10000

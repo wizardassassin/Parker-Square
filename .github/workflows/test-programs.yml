@@ -25,7 +25,11 @@ jobs:
             - name: Setup MPI
               if: ${{ matrix.data.name == 'MPI' }}
               uses: mpi4py/setup-mpi@v1
+              with:
+                  mpi: "openmpi"
             - name: Compile Program
               run: make ${{ matrix.data.command }}
             - name: Run Program
               run: bash ./run_program.sh ${{ matrix.data.command }} 0 50000 10000
+            - name: Verify Output
+              run: diff <(grep -h " | " ./${{ matrix.data.wildcard }} | sort) <(cat ./tests/test_0_50000.txt | sort)

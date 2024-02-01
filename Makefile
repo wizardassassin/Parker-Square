@@ -16,4 +16,4 @@ main_mpi:
 	$(MPICXX) $(CXXFLAGS) mpi/main_mpi.cpp -o main_mpi.out
 
 clean:
-	rm *.txt
+	rm main.out main_quiet.out main_mpi.out compute_*.txt aggregated_*.txt mpi_*.txt

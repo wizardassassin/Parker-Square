@@ -1,0 +1,31 @@
+name: Test Programs
+
+on: [push, pull_request]
+
+jobs:
+    runTests:
+        name: Test ${{ matrix.data.name }} Impl
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                data:
+                    [
+                        { name: Main, command: main, wildcard: compute_*.txt },
+                        {
+                            name: Main Quiet,
+                            command: main_quiet,
+                            wildcard: aggregated_*.txt,
+                        },
+                        { name: MPI, command: main_mpi, wildcard: mpi_*.txt },
+                    ]
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - name: Setup MPI
+              if: ${{ matrix.data.name == 'MPI' }}
+              uses: mpi4py/setup-mpi@v1
+            - name: Compile Program
+              run: make ${{ matrix.data.command }}
+            - name: Run Program
+              run: bash ./run_program.sh ${{ matrix.data.command }}.out 0 50000 10000

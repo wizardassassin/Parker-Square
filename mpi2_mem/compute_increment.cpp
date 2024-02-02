@@ -109,10 +109,17 @@ void post_compute(std::ostream &stream, vv_int &vect, int64_t vect_len) {
     stream << stream2.str();
 }
 
-void main_compute(std::ostream &stream, int64_t start) {
+void main_compute(std::ostream &stream, vv_int &vect, int64_t start) {
     int64_t stop = start + 1;
     stream << start << " " << stop << "\n";
-    vv_int vect(2 * start + 1);
+    for (size_t i = 0; i < 2 * start + 1; i++) {
+        vect[i].clear();
+        // vect[i].shrink_to_fit();
+    }
+    // vect.clear();
+    // vect.reserve(2 * start + 1);
+    // vect.resize(2 * start + 1);
+    // vv_int vect(2 * start + 1);
     pre_compute(vect, start);
     compute(vect, start);
     post_compute(stream, vect, 2 * start + 1);

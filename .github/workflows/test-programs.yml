@@ -18,6 +18,7 @@ jobs:
                             wildcard: aggregated_*.txt,
                         },
                         { name: MPI, command: main_mpi, wildcard: mpi_*.txt },
+                        { name: MPI2, command: main_mpi2, wildcard: mpi_*.txt },
                     ]
         steps:
             - name: Checkout repository

@@ -109,10 +109,9 @@ void post_compute(std::ostream &stream, vv_int &vect, int64_t vect_len) {
     stream << stream2.str();
 }
 
-void main_compute(std::ostream &stream, int64_t start) {
+void main_compute(std::ostream &stream, vv_int &vect, int64_t start) {
     int64_t stop = start + 1;
     stream << start << " " << stop << "\n";
-    vv_int vect(2 * start + 1);
     pre_compute(vect, start);
     compute(vect, start);
     post_compute(stream, vect, 2 * start + 1);

@@ -68,8 +68,14 @@ int main(int argc, char** argv) {
     std::ofstream outFile;
     outFile.open(outFileName);
 
+    std::vector<std::vector<int64_t>> vect(2 * maxValue + 1);
+    vect.shrink_to_fit();
     for (int64_t i = minValue + rank; i < maxValue; i += size) {
-        compute_increment::main_compute(outFile, i);
+        compute_increment::main_compute(outFile, vect, i);
+        for (size_t j = 0; j < 2 * i + 1; j++) {
+            vect[j].clear();
+            vect[j].shrink_to_fit();
+        }
         outFile << std::flush;
     }
 

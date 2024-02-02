@@ -24,7 +24,7 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
             - name: Setup MPI
-              if: ${{ matrix.data.name == 'MPI' }}
+              if: contains(matrix.data.name, 'MPI')
               uses: mpi4py/setup-mpi@v1
               with:
                   mpi: "openmpi"

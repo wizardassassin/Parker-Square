@@ -11,8 +11,9 @@ int main(int argc, char const* argv[]) {
 
     const long long min_val = std::stoll(argv[1]);
     const long long max_val = std::stoll(argv[2]);
-    const long long thread_count =
-        (argc >= 4) ? std::stoll(argv[3]) : std::thread::hardware_concurrency();
+    const long long thread_count = (argc >= 4 && std::stoll(argv[3]) > 0)
+                                       ? std::stoll(argv[3])
+                                       : std::thread::hardware_concurrency();
     const std::string prefix = (argc >= 5) ? argv[4] : "thread";
 
     ThreadPool::ThreadPool pool(thread_count);

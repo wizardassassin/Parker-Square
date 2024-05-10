@@ -24,6 +24,11 @@ jobs:
                             command: main_mpi2_mem,
                             wildcard: mpi_*.txt,
                         },
+                        {
+                            name: Threaded,
+                            command: main_threadded,
+                            wildcard: thread_*.txt,
+                        },
                     ]
         steps:
             - name: Checkout repository

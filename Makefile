@@ -12,6 +12,9 @@ main:
 main_quiet:
 	$(CXX) $(CXXFLAGS) main_quiet.cpp -o main_quiet.out
 
+main_threadded:
+	$(CXX) $(CXXFLAGS) threaded_compute/main_threadded.cpp -o main_threadded.out
+
 main_mpi:
 	$(MPICXX) $(CXXFLAGS) mpi/main_mpi.cpp -o main_mpi.out
 

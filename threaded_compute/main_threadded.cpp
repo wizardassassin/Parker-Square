@@ -7,7 +7,7 @@
 #include "thread_pool.hpp"
 
 int main(int argc, char const* argv[]) {
-    if (argc != 3 || argc != 4) return 1;
+    if (argc != 3 && argc != 4) return 1;
 
     const long long min_val = std::stoll(argv[1]);
     const long long max_val = std::stoll(argv[2]);

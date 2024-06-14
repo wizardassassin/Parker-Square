@@ -38,7 +38,7 @@ int main(int argc, char const* argv[]) {
     }
 
     pool.start();
-    pool.wait(std::cout);
+    pool.wait(std::cout, false);
     pool.stop();
 
     for (long long i = 0; i < thread_count; i++) file_store[i].close();

@@ -139,11 +139,13 @@ class ThreadPool {
         this->isActive = false;
         this->mainWait.notify_all();
     }
-    void wait(std::ostream& stream) {
+    void wait(std::ostream& stream, bool isInteractive = true) {
         std::unique_lock<std::mutex> lock(this->threadLock);
         std::cout << this->threadCount << " Threads:\n";
         auto start = std::chrono::steady_clock::now();
-        this->mainWait.wait(lock, [this, &stream, &start] {
+        long long nextPrint = 0;
+        this->mainWait.wait(lock, [this, &stream, &start, isInteractive,
+                                   &nextPrint] {
             auto stop = std::chrono::steady_clock::now();
             long long activeThreads = this->activeThreads;
             long long jobCount = this->jobCount;
@@ -151,7 +153,13 @@ class ThreadPool {
                 jobCount, (long long)this->jobs.size() + activeThreads);
             long long completedJobs =
                 std::max(0LL, this->jobCount - remainingJobs - activeThreads);
-            stream << "\33[2K\r";
+            long long percentComplete =
+                (long long)(completedJobs / (long double)jobCount * 100);
+            if (!isInteractive && percentComplete < nextPrint) {
+                return this->jobs.empty() && this->activeThreads == 0;
+            }
+            nextPrint++;
+            if (isInteractive) stream << "\33[2K\r";
             stream << completedJobs << " / " << jobCount << " - ";
             Timer::printTime(stream, start, stop);
             stream << " < ";
@@ -168,10 +176,13 @@ class ThreadPool {
             } else {
                 stream << "unknown";
             }
-            stream << std::flush;
+            if (isInteractive)
+                stream << std::flush;
+            else
+                stream << std::endl;
             return this->jobs.empty() && this->activeThreads == 0;
         });
-        stream << std::endl;
+        if (isInteractive) stream << std::endl;
         this->jobCount = 0;
     }
     void wait() {

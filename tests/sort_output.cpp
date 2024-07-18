@@ -2,6 +2,7 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <regex>
 #include <utility>
 #include <vector>
@@ -9,6 +10,13 @@
 int main(int argc, char const* argv[]) {
     if (argc < 2) return 1;
     const std::string filename = argv[1];
+
+    const long long min_val = (argc >= 4)
+                                  ? std::stoll(argv[2]) * std::stoll(argv[2])
+                                  : std::numeric_limits<long long>::min();
+    const long long max_val = (argc >= 4)
+                                  ? std::stoll(argv[3]) * std::stoll(argv[3])
+                                  : std::numeric_limits<long long>::max();
 
     std::ifstream infile(filename);
 
@@ -29,6 +37,8 @@ int main(int argc, char const* argv[]) {
 
     std::ofstream outfile(filename + ".txt");
     for (const auto& val : vect) {
+        if (val.first < min_val) continue;
+        if (val.first >= max_val) continue;
         outfile << val.second << "\n";
     }
 

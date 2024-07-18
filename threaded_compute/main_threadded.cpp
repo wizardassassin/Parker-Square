@@ -28,7 +28,7 @@ int main(int argc, char const* argv[]) {
         pool.addJob([i, &file_store, &vect_store, max_val](long long threadId) {
             auto& file = file_store[threadId];
             auto& vect = vect_store[threadId];
-            vect.resize(2 * max_val + 1);
+            vect.resize(2 * (max_val - 1) + 1);
             ComputeIncrement::main_compute(file, vect, i);
             for (size_t j = 0; j < 2 * i + 1; j++) {
                 vect[j].clear();

@@ -26,7 +26,7 @@ jobs:
                         },
                         {
                             name: Threaded,
-                            command: main_threadded,
+                            command: main_threaded,
                             wildcard: thread_*.txt,
                         },
                     ]

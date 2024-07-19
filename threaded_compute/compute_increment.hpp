@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -20,39 +21,36 @@ int checkEdges(int64_t a, int64_t b, int64_t c, int64_t d, int64_t x,
     return (vert_1 << 1) + hori_1;
 }
 
-bool findCombinations(std::ostream &stream,
-                      std::vector<std::pair<int64_t, int64_t>> &arr) {
-    size_t arr_len = arr.size();
-    for (size_t i = 0; i < arr_len; i++) {
-        for (size_t j = i + 1; j < arr_len; j++) {
-            auto &val1 = arr[i];
-            auto &val2 = arr[j];
-            auto a = val1.first * val1.first;
-            auto d = val1.second * val1.second;
-            auto b = val2.first * val2.first;
-            auto c = val2.second * val2.second;
-            std::vector<
-                std::pair<std::pair<int64_t, int64_t>, std::pair<int, int64_t>>>
-                arr3;
-            for (size_t i2 = j + 1; i2 < arr_len; i2++) {
-                auto &val3 = arr[i2];
-                auto x1 = val3.first * val3.first;
-                auto y1 = val3.second * val3.second;
+bool findCombinations(std::ostream &stream, const std::vector<int64_t> &vect) {
+    size_t arr_len = vect.size();
+    for (size_t i = 0; i < arr_len - 1; i += 2) {
+        for (size_t j = i + 2; j < arr_len - 1; j += 2) {
+            auto val1_f = vect[i];
+            auto val1_s = vect[i + 1];
+            auto val2_f = vect[j];
+            auto val2_s = vect[j + 1];
+            auto a = val1_f * val1_f;
+            auto d = val1_s * val1_s;
+            auto b = val2_f * val2_f;
+            auto c = val2_s * val2_s;
+            std::vector<std::tuple<int64_t, int64_t, int64_t, int64_t>> vect2;
+            for (size_t i2 = j + 2; i2 < arr_len - 1; i2 += 2) {
+                auto val3_f = vect[i2];
+                auto val3_s = vect[i2 + 1];
+                auto x1 = val3_f * val3_f;
+                auto y1 = val3_s * val3_s;
                 auto com1 = checkEdges(a, b, c, d, x1, y1);
-                if (com1 == 0) {
-                    continue;
-                }
-                arr3.push_back(std::pair(val3, std::pair(com1, i2)));
+                if (com1 == 0) continue;
+                vect2.push_back({val3_f, val3_s, com1, i2});
             }
-            if (arr3.size() > 0) {
-                stream << i << "(" << val1.first << ", " << val1.second << ") "
-                       << j << "(" << val2.first << ", " << val2.second
-                       << ") |";
-                for (auto &v : arr3) {
-                    stream << " " << v.second.second << "(" << v.first.first
-                           << ", " << v.first.second << ", '"
-                           << ((v.second.first >> 1) & 1)
-                           << (v.second.first & 1) << "')";
+            if (vect2.size() > 0) {
+                stream << i / 2 << "(" << val1_f << ", " << val1_s << ") "
+                       << j / 2 << "(" << val2_f << ", " << val2_s << ") |";
+                for (auto &v : vect2) {
+                    stream << " " << std::get<3>(v) / 2 << "(" << std::get<0>(v)
+                           << ", " << std::get<1>(v) << ", '"
+                           << ((std::get<2>(v) >> 1) & 1)
+                           << (std::get<2>(v) & 1) << "')";
                 }
                 stream << "\n";
                 return true;
@@ -88,26 +86,12 @@ void compute(vv_int &vect, int64_t start) {
     }
 }
 
-void post_compute(std::ostream &stream, vv_int &vect, int64_t vect_len) {
-    std::stringstream stream2;
-    int64_t count = 0;
+void post_compute(std::ostream &stream, const vv_int &vect, int64_t vect_len) {
     for (int64_t i = 0; i < vect_len; i++) {
         int64_t len = vect[i].size();
-        if (len > 6) {
-            std::vector<std::pair<int64_t, int64_t>> vect2(len / 2);
-            for (int64_t j = 0; j < len - 1; j += 2) {
-                int64_t p1 = vect[i][j];
-                int64_t p2 = vect[i][j + 1];
-                vect2[j / 2] = std::pair(p1, p2);
-            }
-            bool printed = findCombinations(stream2, vect2);
-            if (printed) {
-                count++;
-            }
-        }
+        if (len < 8) continue;
+        findCombinations(stream, vect[i]);
     }
-    stream << count << "\n";
-    stream << stream2.str();
 }
 
 void main_compute(std::ostream &stream, vv_int &vect, int64_t start) {

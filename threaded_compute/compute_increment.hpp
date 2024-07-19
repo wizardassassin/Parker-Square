@@ -17,7 +17,7 @@ int checkEdges(int64_t a, int64_t b, int64_t c, int64_t d, int64_t x,
     bool vert_1 = v_1 == x - y;
     int64_t h_1 = a + c - b - d;
     bool hori_1 = h_1 == x - y;
-    return vert_1 << 1 + hori_1;
+    return (vert_1 << 1) + hori_1;
 }
 
 bool findCombinations(std::ostream &stream,

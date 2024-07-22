@@ -62,30 +62,30 @@ bool findCombinations(std::ostream &stream, const std::vector<int64_t> &vect) {
 
 void pre_compute(vv_int &vect, int64_t start) {
     int64_t start_min = std::ceil(std::sqrt(start * start / 2));
-    for (int64_t i = start_min; i < start; i++) {
+    for (int64_t i = start_min | 1; i < start; i += 2) {
         int64_t j_min = std::ceil(std::sqrt(start * start - i * i));
         int64_t j_lim = std::ceil(std::sqrt((start + 1) * (start + 1) - i * i));
         int64_t j_max = std::min(i, j_lim);
-        for (int64_t j = j_min; j < j_max; j++) {
+        for (int64_t j = j_min | 1; j < j_max; j += 2) {
             int64_t v = i * i + j * j;
             auto index =
                 (v - (v + 1) / 4) - (start * start - (start * start + 1) / 4);
-            vect[index].push_back(j);
-            vect[index].push_back(i);
+            vect[index / 2].push_back(j);
+            vect[index / 2].push_back(i);
         }
     }
 }
 
 void compute(vv_int &vect, int64_t start) {
-    for (int64_t i = start; i < start + 1; i++) {
+    for (int64_t i = start | 1; i < start + 1; i += 2) {
         int64_t j_lim = std::ceil(std::sqrt((start + 1) * (start + 1) - i * i));
         int64_t j_max = std::min(i, j_lim);
-        for (int64_t j = 0; j < j_max; j++) {
+        for (int64_t j = 0 | 1; j < j_max; j += 2) {
             int64_t v = i * i + j * j;
             auto index =
                 (v - (v + 1) / 4) - (start * start - (start * start + 1) / 4);
-            vect[index].push_back(j);
-            vect[index].push_back(i);
+            vect[index / 2].push_back(j);
+            vect[index / 2].push_back(i);
         }
     }
 }
@@ -104,7 +104,7 @@ void main_compute(std::ostream &stream, vv_int &vect, int64_t start) {
     stream2 << start << " " << stop << "\n";
     pre_compute(vect, start);
     compute(vect, start);
-    post_compute(stream2, vect, std::ceil((2 * start + 1) * 0.75));
+    post_compute(stream2, vect, (2 * start + 1) * 0.75 / 2.0 + 1);
     stream << stream2.str() << std::flush;
 }
 }  // namespace ComputeIncrement
